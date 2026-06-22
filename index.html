@@ -108,15 +108,14 @@ const SOP_DATA = {
       },
       {
         title: "Inbox Triage",
-        status: "risk",
-        summary: "She manually scans to find who she hasn't yet replied to.",
+        status: "stable",
+        summary: "She uses the inbox's unread filter to find who she hasn't replied to yet.",
         owner: "Madelyn",
-        tools: "Messaging app inbox · \"Replied\" tab",
+        tools: "Messaging app inbox · unread filter",
         actions: [
-          "Sort by \"Replied\"",
-          "Scan for who's missing a response"
-        ],
-        openQ: "The \"Replied\" tab shows all-time repliers, not an unread queue — no structural guarantee a reply doesn't get missed."
+          "Filter the inbox to unread",
+          "Reply to anyone still showing as unread"
+        ]
       },
       {
         title: "Draft & Send Reply",
