@@ -85,14 +85,14 @@ const SOP_DATA = {
   },
 
   messaging: {
-    owner: "Madelyn Carson",
+    owner: "Madelyn Randolph",
     steps: [
       {
         title: "Notification Trigger",
         status: "stable",
         summary: "A text notification fires when a contact replies on LinkedIn.",
-        owner: "Madelyn",
-        tools: "Schedlr's per-client notification system",
+        owner: "Madelyn Randolph",
+        tools: "Text system · Schedlr replied tab",
         actions: [
           "Receive a text naming the account",
           "Log into that client's inbox"
@@ -101,45 +101,43 @@ const SOP_DATA = {
       {
         title: "Inbox Triage",
         status: "stable",
-        summary: "She uses the inbox's unread filter to find who she hasn't replied to yet.",
+        summary: "Use Schedlr unread filter to find who needs a response.",
         owner: "Madelyn",
         tools: "Schedlr inbox · unread filter",
         actions: [
           "Filter the inbox to unread",
-          "Reply to anyone still showing as unread"
+          "Find the lead's response and engage"
         ]
       },
       {
         title: "Draft & Send Reply",
         status: "broken",
-        summary: "Copy-pastes the thread into her personal AI account and asks how to respond — with zero client context.",
+        summary: "Copy-pastes the thread into her personal AI account and asks how to respond, currently with no client context.",
         owner: "Madelyn",
-        tools: "Personal Claude account (not the custom GPT Max referenced — she's unaware it exists)",
+        tools: "Personal Claude account (not the custom GPT Max referenced - she's unaware it exists)",
         actions: [
           "Copy the thread",
           "Paste it into the AI tool",
           "Ask \"how do I respond?\"",
-          "Send the suggested reply"
+          "Send the suggested reply with personal judgement"
         ],
-        detail: "Confirmed as the #1 time driver of messaging work.",
-        openQ: "No client brief, FAQ, or objection-handling doc exists anywhere. By her own account, this — not message volume — is the biggest driver of how long messaging takes (20 min – 2 hrs/day, highly variable)."
+        detail: "Confirmed as the #1 time driver of messaging work."
       },
       {
         title: "Pipeline Update",
-        status: "broken",
-        summary: "After replying, she moves the contact to the matching CRM stage.",
+        status: "risk",
+        summary: "After replying, manually move the contact to the matching CRM stage.",
         owner: "Madelyn",
         tools: "CRM",
-        detail: "Described as a standard, every-time step in her own workflow — but doesn't match what Spencer observed (~5 missed syncs).",
-        openQ: "Root cause unresolved — a timing lag, a step silently slipping, a tooling gap, or legacy/stale pipeline data predating consistent use of the manual process (both new to these roles; possible, not confirmed). Recommended direction: automate this handoff rather than rely on a manual move repeating cleanly forever."
+        detail: "[If this is missed, it can create issues for the caller especially if moving them to \"not interested\" is missed - manual breaking point potential]"
       },
       {
         title: "Tracking Log Update",
-        status: "risk",
-        summary: "Logs time spent, replies, notifications, and meetings set into a separate spreadsheet.",
+        status: "stable",
+        summary: "Log time spent, replies, notifications, and meetings set into a separate spreadsheet.",
         owner: "Madelyn",
         tools: "Second tracking spreadsheet",
-        openQ: "A second tracking spreadsheet now exists alongside Spencer's AM tracker — unclear whether these merge or stay separate; risk of repeating the same fragmentation pattern."
+        note: "This is temporary while building out baseline metrics for time and effort by Madelyn."
       },
       {
         title: "Re-engagement / Follow-Up",
@@ -148,16 +146,15 @@ const SOP_DATA = {
         owner: "Madelyn",
         branches: [
           { title: "Auto re-engage", desc: "Explicit \"contact me later\" → platform automation (caps at 90 days)" },
-          { title: "Manual review", desc: "Everything else — daily manual review" }
+          { title: "Manual review", desc: "Everything else - daily manual review" }
         ],
-        detail: "Platform automation caps at 90 days, even when a contact asks for longer (e.g., 6 months) — no manual backstop for that gap described."
+        detail: "Platform automation caps at 90 days, even when a contact asks for longer (e.g., 6 months) - no manual backstop for that gap described."
       },
       {
         title: "Escalation & Exceptions",
         status: "risk",
-        summary: "When uncertain, she screenshots the message and emails Max.",
-        owner: "Madelyn → Max",
-        openQ: "Same scalability gap as Spencer's escalation step, confirmed independently from her side — no shared written list exists yet."
+        summary: "When uncertain, screenshot the message and email Max.",
+        owner: "Madelyn → Max"
       }
     ]
   }
@@ -326,6 +323,7 @@ const SOP_DATA = {
     if (s.trigger) f.push({ label: "Trigger", text: s.trigger });
     if (s.actions) f.push({ label: "Key Actions", items: s.actions });
     if (s.detail) f.push({ label: "Status Detail", text: s.detail, color: "#a8362b" });
+    if (s.note) f.push({ label: "Note", text: s.note, color: "#6b675e" });
     if (s.openQ) f.push({ label: "Open Question", text: s.openQ, color: "#6b675e" });
     return f;
   }
