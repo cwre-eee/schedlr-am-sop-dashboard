@@ -21,43 +21,46 @@ const SOP_DATA = {
         status: "risk",
         summary: "Campaign goes live; Max hands the account to Spencer.",
         owner: "Max → Spencer",
-        tools: "GoHighLevel CRM, shared spreadsheet",
+        tools: "CRM · Shared spreadsheet",
         actions: [
-          "Client pays invoice → campaign goes live",
           "Max builds the campaign, messaging, and invoice",
-          "Spencer waits ~2–3 days before the first calling pass",
-          "Hard gate — won't call without the client's scheduling link"
-        ],
-        openQ: "Schedule-link handoff sometimes gets missed (Spencer has had to chase Max for it). The ~20-lead calling threshold is a rule of thumb, never tested."
+          "Client pays invoice and campaign goes live",
+          "Spencer waits ~2-3 days before the first calling pass",
+          "Hard gate - won't call without the client's scheduling link"
+        ]
       },
       {
         title: "Pre-Call Readiness Check",
         status: "risk",
-        summary: "Spencer manually checks which accounts have enough leads to start dialing.",
+        summary: "Spencer manually checks which accounts have enough leads to start dialing in the CRM.",
         owner: "Spencer",
-        tools: "Shared internal spreadsheet — the real source of truth, not the CRM",
+        tools: "CRM (contacts in New Lead, Messaging, or Today's Call List stages) · Client's scheduling link · Schedlr (messaging app)",
         actions: [
-          "Open the spreadsheet",
-          "Check lead count per account",
+          "Pull up the contact's CRM account",
+          "Check the campaign type",
+          "Check lead count in New Leads status",
           "~20 leads = ready to call",
-          "Track scheduling links separately"
-        ],
-        openQ: "No CRM-side alert when an account crosses the ready-to-call threshold; the spreadsheet doesn't scale past one or two people."
+          "Open client's scheduling link in separate tab",
+          "Open Schedlr (\"messaging\")",
+          "Find the client's messaging profile for a quick query (if someone picks up)",
+          "Check Messaging status",
+          "Move contacts from New Lead to Today's Call List",
+          "Move contacts from the messaging status to the call status if they're cold in messages"
+        ]
       },
       {
         title: "Active Calling Workflow",
         status: "risk",
         summary: "Spencer dials through the CRM, cross-references context in a lookup tool, and books live.",
         owner: "Spencer",
-        tools: "CRM dialer · \"Connect\" search tool · client scheduling link (3 tools, 2 screens)",
+        tools: "CRM dialer · CRM (contacts in New Lead, Messaging, or Today's Call List stages) · Client's scheduling link · Schedlr (messaging app)",
         actions: [
           "Dial via the CRM",
-          "On pickup, search Connect for context (referral source, vertical)",
+          "On pickup, search Schedlr for context (referral source, vertical)",
           "Personalize the call",
           "Book live on the calendar if they convert",
           "Attempts tracked as double-dials (10 logged = 5 real)"
-        ],
-        openQ: "Two untested cadence questions — scheduler-list calling frequency, and referral-list attempt count / recontact window (never agreed with the client)."
+        ]
       },
       {
         title: "Outcome Routing",
@@ -67,27 +70,16 @@ const SOP_DATA = {
         branches: [
           { title: "Appointment Scheduled", desc: "Booked live; client + Max notified by group text" },
           { title: "Not Interested", desc: "After 10 logged attempts (5 real), or an explicit decline" },
-          { title: "Follow-Up", desc: "Soft \"not now\" — manually reviewed every other day, no nurture automation" },
+          { title: "Follow-Up", desc: "Soft \"not now\" - manually reviewed every other day, no nurture automation" },
           { title: "Wrong Number", desc: "" }
-        ],
-        openQ: "Follow-Up re-check timing (\"a week or two\") is Spencer's personal judgment, undocumented."
-      },
-      {
-        title: "Messaging Crossover",
-        status: "broken",
-        flagged: true,
-        linkNote: "Mirrors Messaging Step 4 (Pipeline Update).",
-        summary: "A reply in the LinkedIn messaging app should update this same pipeline — confirmed it doesn't always.",
-        detail: "~5 confirmed cases of Spencer calling someone who had already told Madelyn \"not interested\" via messaging, because the pipeline stage never updated.",
-        openQ: "Root cause unresolved — a timing lag, a missed manual step, a tool-integration gap, or stale/legacy data from before both ran these roles day-to-day (recent tenure; possible, not confirmed). Likely fix is an automation between the messaging tool and the CRM, not a new manual habit."
+        ]
       },
       {
         title: "Escalation & Exceptions",
         status: "risk",
         summary: "Anything Spencer can't decide alone goes to Max informally.",
         owner: "Spencer → Max",
-        trigger: "Compliance-adjacent questions (e.g., ringless voicemail legality) and client-specific judgment calls",
-        openQ: "No written escalation list — purely judgment-based, not transferable to the new hire starting this period."
+        trigger: "Compliance-adjacent questions (e.g., ringless voicemail legality) and client-specific judgment calls"
       }
     ]
   },
@@ -100,7 +92,7 @@ const SOP_DATA = {
         status: "stable",
         summary: "A text notification fires when a contact replies on LinkedIn.",
         owner: "Madelyn",
-        tools: "Messaging app's per-client notification system",
+        tools: "Schedlr's per-client notification system",
         actions: [
           "Receive a text naming the account",
           "Log into that client's inbox"
@@ -111,7 +103,7 @@ const SOP_DATA = {
         status: "stable",
         summary: "She uses the inbox's unread filter to find who she hasn't replied to yet.",
         owner: "Madelyn",
-        tools: "Messaging app inbox · unread filter",
+        tools: "Schedlr inbox · unread filter",
         actions: [
           "Filter the inbox to unread",
           "Reply to anyone still showing as unread"
@@ -135,8 +127,6 @@ const SOP_DATA = {
       {
         title: "Pipeline Update",
         status: "broken",
-        flagged: true,
-        linkNote: "Mirrors Calling Step 5 (Messaging Crossover).",
         summary: "After replying, she moves the contact to the matching CRM stage.",
         owner: "Madelyn",
         tools: "CRM",
@@ -311,13 +301,6 @@ const SOP_DATA = {
 
   <div class="steps-scroll">
     <div class="steps-row" id="steps-row"></div>
-  </div>
-
-  <div class="wrap">
-    <div class="cross-link">
-      <span class="icon">🔗</span>
-      <div class="text"><strong>Cross-system link:</strong> Calling Step 5 (Messaging Crossover) and Messaging Step 4 (Pipeline Update) are the same failure seen from each side — a reply that should update the CRM stage but doesn't. Treat them as one integration fix, not two separate manual habits.</div>
-    </div>
   </div>
 
 <script>
