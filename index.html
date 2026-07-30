@@ -59,7 +59,7 @@ const SOP_DATA = {
           "On pickup, search Schedlr for context (referral source, vertical)",
           "Personalize the call",
           "Book live on the calendar if they convert",
-          "Attempts tracked as double-dials (10 logged = 5 real)"
+          "Attempts tracked as double-dials — 10 attempts = 20 dials"
         ]
       },
       {
@@ -69,8 +69,8 @@ const SOP_DATA = {
         owner: "Spencer",
         branches: [
           { title: "Appointment Scheduled", desc: "Booked live; client + Max notified by group text" },
-          { title: "Not Interested", desc: "After 10 logged attempts (5 real), or an explicit decline" },
-          { title: "Follow-Up", desc: "Soft \"not now\" - manually reviewed every other day, no nurture automation" },
+          { title: "Not Interested", desc: "After 10 attempts (20 dials), or an explicit decline" },
+          { title: "Follow-Up", desc: "Soft \"not now\" → revisited weekly (message, then back to the call list); \"check back later\" auto-messages at ~1 month or quarterly" },
           { title: "Wrong Number", desc: "" }
         ]
       },
@@ -111,44 +111,45 @@ const SOP_DATA = {
       },
       {
         title: "Draft & Send Reply",
-        status: "broken",
-        summary: "Copy-pastes the thread into her personal AI account and asks how to respond, currently with no client context.",
+        status: "stable",
+        summary: "Uses the Client Reference Claude project — per-client context (voice, objections, red lines) built from each client's onboarding.",
         owner: "Madelyn",
-        tools: "Personal Claude account (not the custom GPT Max referenced - she's unaware it exists)",
+        tools: "Team Claude account · Client Reference project (per-client briefs) · Standard Messaging Reference (approved fallback)",
         actions: [
-          "Copy the thread",
-          "Paste it into the AI tool",
-          "Ask \"how do I respond?\"",
-          "Send the suggested reply with personal judgement"
+          "Ask the Client Reference project, naming the client",
+          "It answers from that client's brief — voice, objection handling, target market",
+          "Review and send with personal judgment",
+          "Escalate anything it flags"
         ],
-        detail: "Confirmed as the #1 time driver of messaging work."
+        detail: "Replaces the old copy-paste-into-personal-AI workflow (previously the #1 time driver). Client context is now built in."
       },
       {
         title: "Pipeline Update",
-        status: "risk",
+        status: "broken",
         summary: "After replying, manually move the contact to the matching CRM stage.",
         owner: "Madelyn",
         tools: "CRM",
-        detail: "[If this is missed, it can create issues for the caller especially if moving them to \"not interested\" is missed - manual breaking point potential]"
+        detail: "KNOWN OPEN ISSUE (owned by Max + Andy / GHL): when a \"not interested\" from messaging isn't moved, the caller re-dials someone who already declined (~5 confirmed cases). The real fix is a CRM-side stage sync. Until then, updating the stage immediately after every reply is critical."
       },
       {
         title: "Tracking Log Update",
         status: "stable",
-        summary: "Log time spent, replies, notifications, and meetings set into a separate spreadsheet.",
-        owner: "Madelyn",
-        tools: "Second tracking spreadsheet",
-        note: "This is temporary while building out baseline metrics for time and effort by Madelyn."
+        summary: "Messaging activity flows to the Ops Dashboard automatically; only calls are logged by hand.",
+        owner: "Madelyn / Spencer",
+        tools: "Ops Dashboard (Messaging Stats — automated nightly · Daily Call Log — manual)",
+        note: "Replaces the old separate tracking spreadsheet. Messaging stats pull nightly from SalesRobot — no manual messaging log needed."
       },
       {
         title: "Re-engagement / Follow-Up",
         status: "risk",
-        summary: "Explicit \"contact me later\" requests get an automation; everything else is daily manual review.",
+        summary: "Defined cadence now: a weekly sweep, plus timed auto-messages for later-interest contacts.",
         owner: "Madelyn",
         branches: [
-          { title: "Auto re-engage", desc: "Explicit \"contact me later\" → platform automation (caps at 90 days)" },
-          { title: "Manual review", desc: "Everything else - daily manual review" }
+          { title: "Weekly sweep", desc: "Start of each week: revisit, message, then return to the call list" },
+          { title: "\"Check in later\"", desc: "Auto-message at ~1 month, then added back to the call list" },
+          { title: "\"Follow up next quarter\"", desc: "Auto-message at ~90 days" }
         ],
-        detail: "Platform automation caps at 90 days, even when a contact asks for longer (e.g., 6 months) - no manual backstop for that gap described."
+        detail: "Platform automation caps at 90 days — for longer requests (e.g., 6 months), set a manual reminder as the backstop."
       },
       {
         title: "Escalation & Exceptions",
@@ -274,7 +275,7 @@ const SOP_DATA = {
 <body>
 
   <div class="wrap">
-    <div class="eyebrow">Schedlr · Account Management</div>
+    <div class="eyebrow">Schedlr · Account Management · Updated July 2026</div>
     <h1>AM Standard Operating Procedures</h1>
     <p class="subtitle">Calling and messaging workflows mapped step by step, with a live read on what's stable, what runs on manual judgment, and what's actively broken today. Click any step to expand its detail.</p>
   </div>
